@@ -30,11 +30,10 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -69,7 +68,7 @@ public class SensorHuskyLens extends OpMode {
     private HuskyLens huskyLens;
 
     @Override
-    public void init(){
+    public void init() {
         huskyLens = hardwareMap.get(HuskyLens.class, "huskylens");
 
         /*
@@ -115,8 +114,6 @@ public class SensorHuskyLens extends OpMode {
          */
         huskyLens.selectAlgorithm(HuskyLens.Algorithm.TAG_RECOGNITION);
 
-        telemetry.update();
-        waitForStart();
 
         /*
          * Looking for AprilTags per the call to selectAlgorithm() above.  A handy grid
@@ -124,12 +121,8 @@ public class SensorHuskyLens extends OpMode {
          *
          * Note again that the device only recognizes the 36h11 family of tags out of the box.
          */
-        while(opModeIsActive()) {
-            if (!rateLimit.hasExpired()) {
-                continue;
-            }
-            rateLimit.reset();
-
+    }
+       public void loop() {
             /*
              * All algorithms, except for LINE_TRACKING, return a list of Blocks where a
              * Block represents the outline of a recognized object along with its ID number.
@@ -139,10 +132,16 @@ public class SensorHuskyLens extends OpMode {
              *
              * Returns an empty array if no objects are seen.
              */
-            HuskyLens.Block[] blocks = huskyLens.blocks();
+            HuskyLens.Block[] blocks = huskyLens.blocks(); // reads the husky lens and gets the data
             telemetry.addData("Block count", blocks.length);
             for (int i = 0; i < blocks.length; i++) {
                 telemetry.addData("Block", blocks[i].toString());
+                telemetry.addData("X pos", blocks[i].x);
+                telemetry.addData("Y pos", blocks[i].y);
+                telemetry.addData("Width", blocks[i].width);
+                telemetry.addData("Height", blocks[i].height);
+                double height = blocks[i].height;
+                double width = blocks[i].width;
                 /*
                  * Here inside the FOR loop, you could save or evaluate specific info for the currently recognized Bounding Box:
                  * - blocks[i].width and blocks[i].height   (size of box, in pixels)
@@ -152,9 +151,8 @@ public class SensorHuskyLens extends OpMode {
                  *
                  * These values have Java type int (integer).
                  */
+                telemetry.addData("area", height * width);
             }
-
-            telemetry.update();
         }
     }
 }
