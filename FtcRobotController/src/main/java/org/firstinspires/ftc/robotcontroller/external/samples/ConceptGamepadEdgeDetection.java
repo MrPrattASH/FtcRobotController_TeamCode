@@ -71,7 +71,7 @@ public class ConceptGamepadEdgeDetection extends LinearOpMode {
 
     public void telemetryButtonData() {
         // Add the status of the Gamepad 1 Left Bumper
-        telemetry.addData("Gamepad 1 Left Bumper Pressed", gamepad1.leftBumperWasPressed());
+        telemetry.addData("Gamepad 1 Left Bumper Pressed", gamepad1.yWasPressed());
         telemetry.addData("Gamepad 1 Left Bumper Released", gamepad1.leftBumperWasReleased());
         telemetry.addData("Gamepad 1 Left Bumper Status", gamepad1.left_bumper);
 

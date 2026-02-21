@@ -9,7 +9,22 @@ public class HelloRobot extends OpMode {
         telemetry.addData("Data", "This is the data");
     }
 
+    public void init_loop() {
+
+    }
+
+
+    public void start() {
+        // when you press the play button the INSTANT
+        // start webcam
+        // initialse servos to a specific angle
+    }
+
     public void loop() {
+
+    }
+
+    public void stop() {
 
     }
 }

@@ -19,25 +19,25 @@ public class MecanumDrive {
     private boolean isPinpoint;
 
     public void init(HardwareMap hwMap, boolean isGobildaPinpointIMU) {
-        frontLeftMotor = hwMap.get(DcMotor.class, "front_left_motor");
-        backLeftMotor = hwMap.get(DcMotor.class, "back_left_motor");
-        frontRightMotor = hwMap.get(DcMotor.class, "front_right_motor");
-        backRightMotor = hwMap.get(DcMotor.class, "back_right_motor");
+        frontLeftMotor = hwMap.get(DcMotor.class, "fl");
+        backLeftMotor = hwMap.get(DcMotor.class, "rl");
+        frontRightMotor = hwMap.get(DcMotor.class, "fr");
+        backRightMotor = hwMap.get(DcMotor.class, "rr");
 
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        /*
+
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        */
+
 
         if (isGobildaPinpointIMU) {
             isPinpoint = true;
             double offsetX = -170;
-            double offsetY = -200; // pod offset measurements in mm
+            double offsetY = 0; // pod offset measurements in mm
             double encoderCPR = 4000; // gobilda pods are 2K, EastLoop Components are 4K
             double encoderWheelCircumference = 2 * Math.PI * 16; // wheels are 32mm radius
 
@@ -72,7 +72,7 @@ public class MecanumDrive {
         double backRightPower = forward + strafe - rotate;
 
         double maxPower = 1.0;
-        double maxSpeed = 0.25; // change this for outreach events
+        double maxSpeed = 1.0; // change this for outreach events
 
         maxPower = Math.max(maxPower, Math.abs(frontLeftPower));
         maxPower = Math.max(maxPower, Math.abs(backLeftPower));
@@ -106,6 +106,10 @@ public class MecanumDrive {
         return pinpoint.getPosition();
     }
 
+    public double getHeading() {
+        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+    }
+
     public void updatePinpointPosition(double x, double y, double heading) {
         pinpoint.setPosition(new Pose2D(DistanceUnit.MM, x, y, AngleUnit.DEGREES, heading));
     }
@@ -113,4 +117,6 @@ public class MecanumDrive {
     public void updatePinpoint() {
         pinpoint.update();
     }
+
+
 }
